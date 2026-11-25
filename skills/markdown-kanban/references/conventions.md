@@ -24,7 +24,7 @@ Mark storm tickets with 🌩️ right after the ID: `### [APP-7] 🌩️ Unify t
 A ticket that cannot proceed stays in `doing.md` and is marked, not silently left there:
 
 ```markdown
-### [APP-4] Send reminder emails — ⛔ blocked 2026-03-02: waiting on owner's decision (upgrade the email plan vs. switch service)
+### [APP-8] Send reminder emails — ⛔ blocked 2026-03-02: waiting on owner's decision (upgrade the email plan vs. switch service)
 - Blocker: the current email service's free plan no longer allows a custom sender domain; options and analysis below.
 - Work paused: …
 - Resume when: …

@@ -27,7 +27,7 @@
 # Done
 
 ## 2026-03-05 — [APP-6] Password reset email
-- **Shape**: email template, single-use token table, link handler in src/reset.ts.
+- **Shape**: email template, single-use token table, reset link handler.
 - **Verification**: tests green; link expires after 1 h (checked manually).
 
 ## 2026-03-01 — [APP-4] Login page
