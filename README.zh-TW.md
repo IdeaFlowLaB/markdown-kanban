@@ -53,12 +53,12 @@ npx skills add IdeaFlowLaB/markdown-kanban
 
 ## 測試（Evals）
 
-skill 附一套 [`claude plugin eval`](evals/) 測試，每個情境都分「有 skill」和「沒 skill」兩組跑（兩輪測試的分數；沒 skill 那組每次會浮動）：
+skill 附一套 [`claude plugin eval`](evals/) 測試，每個情境都分「有 skill」和「沒 skill」兩組跑（多輪測試的分數；沒 skill 那組每次會浮動）：
 
 | 案例 | 沒 skill | 有 skill |
 |---|---|---|
 | finish-ticket（完工剪票） | 0.60–0.80 | 1.00 |
-| mark-done-messy（看板本來就有殘留） | 0.17 | 1.00 |
+| mark-done-messy（看板本來就有殘留） | 0.17–0.33 | 1.00 |
 | init-board（建看板） | 0.20 | 1.00 |
 | start-storm-ticket（開工風暴單） | 0.60–1.00 | 1.00 |
 | new-request（新需求開票） | 1.00 | 1.00 |

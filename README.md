@@ -53,12 +53,12 @@ Advanced conventions (see [`references/conventions.md`](skills/markdown-kanban/r
 
 ## Evals
 
-The skill ships with a [`claude plugin eval`](evals/) suite that runs each scenario with and without the skill (scores across two suite runs; the no-skill baseline varies run to run):
+The skill ships with a [`claude plugin eval`](evals/) suite that runs each scenario with and without the skill (scores across several runs; the no-skill baseline varies run to run):
 
 | Case | Without skill | With skill |
 |---|---|---|
 | finish-ticket | 0.60–0.80 | 1.00 |
-| mark-done-messy (board already has leftovers) | 0.17 | 1.00 |
+| mark-done-messy (board already has leftovers) | 0.17–0.33 | 1.00 |
 | init-board | 0.20 | 1.00 |
 | start-storm-ticket | 0.60–1.00 | 1.00 |
 | new-request | 1.00 | 1.00 |
