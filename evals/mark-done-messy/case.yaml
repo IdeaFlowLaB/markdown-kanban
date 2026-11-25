@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: mark-done-messy
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    APP-6 is done, mark it done on the board.
+context:
+  scaffold_script: setup.sh

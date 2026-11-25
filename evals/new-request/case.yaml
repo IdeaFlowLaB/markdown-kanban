@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: new-request
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    我們需要加一個功能：把筆記清單匯出成 PDF。先開票就好，還不要做。
+context:
+  scaffold_script: setup.sh

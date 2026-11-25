@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: finish-ticket
+tags: [hygiene]
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    APP-2 (CSV export) is finished: I added src/export/csv.ts, unit tests pass 12/12, and I checked a real export opens in Excel. Please update the kanban board to reflect that.
+context:
+  scaffold_script: setup.sh
