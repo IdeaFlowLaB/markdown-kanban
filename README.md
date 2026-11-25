@@ -31,11 +31,27 @@ In any project, say:
 
 This creates `kanban/{backlog,doing,done}.md` and appends a short Kanban section to `CLAUDE.md`, so every future session reads `doing.md` before starting work. From then on, talk normally:
 
-- "Add a ticket for PDF export." → a ticket in `backlog.md`
-- "Start APP-7." → cut from backlog into `doing.md`
-- "APP-7 is done, tests pass." → cut into `done.md` (newest first) with what shipped and how it was verified
+- "Add a ticket for PDF export." → a ticket in `backlog.md`, under the phase it belongs to
+- "We need note sharing with links, permissions and a revoke screen." → a parent ticket split into shippable sub-tickets `[APP-7a]`, `[APP-7b]`, …
+- "Start APP-7a." → cut into `doing.md`, then the start ritual: verify → plan → (approval) → build
+- "APP-7a is done, tests pass." → cut into `done.md` (newest first) with what shipped and how it was verified
 
 The board's language follows your project — write tickets in any language.
+
+## What the board looks like
+
+Every board file starts with its own rules, so anyone who opens it — a person, or an agent that never loaded this skill — sees how the board works.
+
+- **`backlog.md`** — grouped into **phases** (with a table of exit conditions), then *Waiting on others*, *Next wave* (agreed, not yet split) and *Parked* (with the trigger that would bring it back). The header also holds your **common acceptance** criteria that every ticket must meet.
+- **`doing.md`** — the **start ritual** for every ticket: move → verify the code still matches the ticket → plan → approval → build. Which tickets need your approval before coding is one line you can edit:
+
+  ```
+  > **Approval before coding**: medium, large, storm
+  > (options: `all` | `medium, large, storm` | `storm only`)
+  ```
+
+  Small, obvious tickets (a typo, a one-line fix) go straight to building under the default.
+- **`done.md`** — newest first, one entry per ticket: **Shape / Why / Decisions / Log / Verification**.
 
 ## Rules in one screen
 
@@ -59,9 +75,14 @@ The skill ships with a [`claude plugin eval`](evals/) suite that runs each scena
 |---|---|---|
 | finish-ticket | 0.60–0.80 | 1.00 |
 | mark-done-messy (board already has leftovers) | 0.17–0.33 | 1.00 |
-| init-board | 0.20 | 1.00 |
+| init-board (files, rules headers, phases, approval line) | 0.11–0.20 | 1.00 |
+| split-large-request | 0.25 | 1.00 |
+| start-medium-ticket (verify, plan, stop for approval) | 0.40 | 1.00 |
+| start-small-ticket (just fix it) | 1.00 | 1.00 |
+| approval-all-policy (edited policy is obeyed) | 1.00 | 1.00 |
 | start-storm-ticket | 0.60–1.00 | 1.00 |
 | new-request | 1.00 | 1.00 |
+| new-request-phase | 1.00 | 1.00 |
 
 Run it yourself:
 

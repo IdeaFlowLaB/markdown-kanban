@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: start-small-ticket
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    Start APP-10.
+context:
+  scaffold_script: setup.sh

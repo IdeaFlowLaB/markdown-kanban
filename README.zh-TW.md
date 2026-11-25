@@ -31,11 +31,27 @@ npx skills add IdeaFlowLaB/markdown-kanban
 
 會建好 `kanban/{backlog,doing,done}.md`，並在 `CLAUDE.md` 加一小段看板掛鉤，讓之後每個 session 開工前先讀 `doing.md`。之後照平常講話就好：
 
-- 「開一張票：PDF 匯出。」→ 在 `backlog.md` 開票
-- 「開始做 APP-7。」→ 從 backlog 整條剪到 `doing.md`
-- 「APP-7 做完了，測試全過。」→ 剪到 `done.md` 最上方，寫明做了什麼、怎麼驗證
+- 「開一張票：PDF 匯出。」→ 在 `backlog.md` 對應的階段底下開票
+- 「我們要做筆記分享：分享連結、權限、撤銷畫面。」→ 一張母票，拆成可以各自出貨的子票 `[APP-7a]`、`[APP-7b]`……
+- 「開始做 APP-7a。」→ 剪到 `doing.md`，接著走開工儀式：查證 → 計畫 →（核准）→ 實作
+- 「APP-7a 做完了，測試全過。」→ 剪到 `done.md` 最上方，寫明做了什麼、怎麼驗證
 
 看板語言跟著你的專案走，票用什麼語言寫都可以。
+
+## 看板長什麼樣子
+
+每個看板檔最上方都帶著自己的規則，所以不管誰打開，不論是人，還是沒載入這個 skill 的 agent，都看得懂這個看板怎麼運作。
+
+- **`backlog.md`**：依**階段**分區（最上面有一張階段出口條件表），之後是「等外部」、「下一波」（已表態要做、還沒拆票）、「後備」（附上重新排程的觸發條件）。提醒區還有**共同驗收**，也就是每張票都要過的條件，由你自己填。
+- **`doing.md`**：每張票的**開工儀式**：移入 → 查證程式碼跟票文還對得上 → 寫計畫 → 核准 → 實作。哪些票開工前要你核准，是一行可以直接改的設定：
+
+  ```
+  > **Approval before coding**: medium, large, storm
+  > (options: `all` | `medium, large, storm` | `storm only`)
+  ```
+
+  預設下，小而明確的票（錯字、一行修正）會直接動手做。
+- **`done.md`**：新的放最上面，一張票一條：**形狀／為何／裁決／執行紀錄／驗證**。
 
 ## 一頁看完規則
 
@@ -59,9 +75,14 @@ skill 附一套 [`claude plugin eval`](evals/) 測試，每個情境都分「有
 |---|---|---|
 | finish-ticket（完工剪票） | 0.60–0.80 | 1.00 |
 | mark-done-messy（看板本來就有殘留） | 0.17–0.33 | 1.00 |
-| init-board（建看板） | 0.20 | 1.00 |
+| init-board（建看板：三檔、提醒區、階段、核准設定） | 0.11–0.20 | 1.00 |
+| split-large-request（大需求拆子票） | 0.25 | 1.00 |
+| start-medium-ticket（中型票：查證、計畫、停下等核准） | 0.40 | 1.00 |
+| start-small-ticket（小票直接修） | 1.00 | 1.00 |
+| approval-all-policy（改過的核准設定有被遵守） | 1.00 | 1.00 |
 | start-storm-ticket（開工風暴單） | 0.60–1.00 | 1.00 |
 | new-request（新需求開票） | 1.00 | 1.00 |
+| new-request-phase（新需求放進對的階段） | 1.00 | 1.00 |
 
 自己跑：
 

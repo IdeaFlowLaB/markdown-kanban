@@ -24,15 +24,29 @@ The board is three Markdown files in the repo, committed together with the work 
 - **Depends on**: ticket IDs, decisions, or "none".
 ```
 
-Optional: **Red lines** (what must not happen). Reuse the project's ID prefix and take the next free number across all three files. Write in the board's existing language (field names included); for a new board, use the user's language.
+Optional: **Red lines** (what must not happen), **Size** (S/M/L). Reuse the project's ID prefix and take the next free number across all three files. Write in the board's existing language (field names included); for a new board, use the user's language.
+
+**Each file starts with a `>` rules header. Read it before editing the file, follow it, and never delete it.** The board's own rules (approval policy, common acceptance, phases) override the defaults below.
 
 ## Workflows
 
-**Set up** (no `kanban/` yet): copy `templates/backlog.md`, `doing.md`, `done.md` from this skill into `kanban/`, translating the template text if the user writes in another language. Append `templates/claude-md-snippet.md` to the project's `CLAUDE.md` (create it if missing; never overwrite existing content; skip if a Kanban section already exists).
+**Set up** (no `kanban/` yet): copy `templates/backlog.md`, `doing.md`, `done.md` from this skill into `kanban/` with their headers intact, translating all template text if the user writes in another language. Fill in phase names if the user has described the plan; otherwise leave the placeholders (do not block setup on it). Append `templates/claude-md-snippet.md` to the project's `CLAUDE.md` (create it if missing; never overwrite existing content; skip if a Kanban section already exists).
 
-**New request**: add a ticket to `backlog.md`. Do not start implementing unless asked.
+**New request**: add a ticket to `backlog.md` under the phase it belongs to (ask if none fits). Do not start implementing unless asked.
 
-**Start a ticket**: read `doing.md` first. Cut the ticket from `backlog.md` into `doing.md` under "In progress", replacing the "(no ticket in progress)" placeholder. If the ticket is marked 🌩️ (storm ticket), read `references/conventions.md` and re-review the design with the user **before** writing any code.
+**Big request → split first.** If one ticket could not ship on its own (several features, several layers, or several independently testable pieces), write a parent ticket plus sub-tickets `[APP-7a]`, `[APP-7b]`, … Each sub-ticket is shippable alone and its **Depends on** names the sub-tickets it needs. The parent lists the sub-tickets in order and stays in backlog until all are done.
+
+**Start a ticket** — follow the start ritual in the header of `doing.md`:
+
+1. **Move**: cut the ticket from `backlog.md` into "In progress", replacing the placeholder.
+2. **Verify**: compare the current code/data with the ticket. Mismatch → stop and report.
+3. **Plan**.
+4. **Approve**: read the **Approval before coding** line in `doing.md` (default `medium, large, storm`). If it covers this ticket, reply with what you verified, the plan, and an explicit question asking the user to approve it — then **stop**; write no code until they do.
+5. **Build.**
+
+Sizing: **small** = one obvious change, a few lines, no design choice, no data/API/schema change. Anything else is **medium** or **large**. A **Size** field on the ticket wins. When unsure, treat it as medium.
+
+🌩️ storm ticket: before planning, read `references/conventions.md` and do the full re-review.
 
 **Finish a ticket**: cut the entry out of `doing.md` (and out of `backlog.md` if a copy is there) and write a `done.md` entry at the **top**, under the header:
 
@@ -42,16 +56,19 @@ Optional: **Red lines** (what must not happen). Reuse the project's ID prefix an
 - **Verification**: how it was proven to work.
 ```
 
-Add **Why / Decisions / Log** when there is something to say. If `doing.md` is now empty, write `(no ticket in progress)` (or the board language's equivalent, e.g. `（目前無進行中票）`).
+Add **Why / Decisions / Log** when there is something to say. If `doing.md` is now empty, write `(no ticket in progress)` (or the board language's equivalent, e.g. `（目前無進行中票）`). When the last sub-ticket of a parent is done, move the parent to `done.md` too.
 
-**Blocked, split, rescoped, or storm ticket**: see `references/conventions.md`.
+**Blocked, rescoped, or storm ticket; phases**: see `references/conventions.md`.
+
+**Older board without rules headers**: offer to add them from `templates/`.
 
 ## Hygiene check (after every board edit)
 
 - [ ] No strikethrough (`~~`), ✅-in-place, or "moved to done.md" pointer lines anywhere
 - [ ] `doing.md` holds only tickets truly in progress (or the placeholder)
 - [ ] `backlog.md` holds only unstarted tickets
-- [ ] Each ticket ID appears in exactly one file
+- [ ] Each ticket's entry exists in exactly one file (other entries may mention its ID)
+- [ ] Rules headers are still at the top of each file
 - [ ] Remind the user to commit the board with the work
 
 **Leftovers already on the board are violations to clean up, not a convention to copy.** If you see an old strikethrough line or recap pointer, remove it while you are there.
@@ -66,5 +83,8 @@ Add **Why / Decisions / Log** when there is something to say. If `doing.md` is n
 | Starting a ticket but leaving it in `backlog.md` | Cut, don't copy |
 | One `KANBAN.md` or `TODO.md` file | Three files under `kanban/` |
 | Executing a 🌩️ ticket as written | Re-review first (`references/conventions.md`) |
+| Coding a medium ticket right after moving it | Verify, plan, then stop for approval |
+| One huge ticket for a multi-part feature | Parent + shippable sub-tickets `[ID]a`, `[ID]b` |
+| Deleting or skipping a file's rules header | Keep it; read it first |
 
 See `references/examples.md` for before/after examples.

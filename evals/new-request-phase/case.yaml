@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: new-request-phase
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    Add a ticket: the note owner should be able to revoke a share link.
+context:
+  scaffold_script: setup.sh

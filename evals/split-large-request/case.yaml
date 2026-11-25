@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: split-large-request
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    We want note sharing with other people: a share link, permissions (read-only vs. can-edit), an email notification to the person it is shared with, and an admin view to revoke any share. Put it on the board - don't build anything yet.
+context:
+  scaffold_script: setup.sh

@@ -1,6 +1,40 @@
 # Advanced conventions
 
-Read this when a ticket is a 🌩️ storm ticket, gets blocked, changes scope, or is being written up in `done.md`.
+Read this when a ticket is a 🌩️ storm ticket, gets blocked, changes scope, is split, or is being written up in `done.md`, or when organizing the backlog into phases.
+
+## Phases (backlog layout)
+
+`backlog.md` is grouped into sections, top to bottom:
+
+| Section | Holds |
+|---|---|
+| `## Phases` table | one row per phase: name + exit condition (what must be true to call it done) |
+| `## Phase N — name` | tickets planned for that phase, in rough order |
+| `## Waiting on others` | not started; depends on people or events outside the project |
+| `## Next wave` | agreed to do, not yet split into tickets — split before starting |
+| `## Parked` | not scheduled; each item names the trigger that would bring it back |
+
+When a phase's exit condition is met and its tickets are all in `done.md`, delete the phase section and mark the row in the table as done (with date).
+
+## Splitting a big ticket
+
+```markdown
+### [APP-7] Note sharing (parent — split into 7a–7c)
+- **Goal**: users can share notes with others.
+- **Sub-tickets** (in order): [APP-7a] share link → [APP-7b] permissions → [APP-7c] revoke view.
+
+### [APP-7a] Read-only share link
+- **Goal**: …
+- **Acceptance**: …
+- **Depends on**: none.
+
+### [APP-7b] Read-only vs. can-edit permissions
+- **Goal**: …
+- **Acceptance**: …
+- **Depends on**: [APP-7a].
+```
+
+Each sub-ticket must be shippable on its own. Split by what can be verified independently (data first, then the layers that use it), not by job title. If a split happens after a ticket was written, annotate the original (see 📌 below).
 
 ## 🌩️ Storm tickets
 
