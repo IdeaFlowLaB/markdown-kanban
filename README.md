@@ -18,6 +18,10 @@
 
 <br>
 
+<p align="center"><img src="docs/demo.gif" width="960" alt="Claude Code 建看板、開兩張票、中型票開工後停下等核准、小票直接修完剪到 done.md · Claude Code sets up the board, adds two tickets, starts a medium ticket and waits for approval, then fixes a small one and moves it to done.md"></p>
+
+<p align="center"><sub>真實 session 重播（回覆有刪節）· Replay of a real session (responses trimmed)</sub></p>
+
 ```
 kanban/
 ├── backlog.md   還沒開工的票，依階段分區     · unstarted tickets, by phase
