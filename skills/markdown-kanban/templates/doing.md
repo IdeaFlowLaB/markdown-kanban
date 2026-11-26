@@ -11,7 +11,7 @@
 > 4. **Approve** — if the policy above covers this ticket, wait for the owner's OK before writing code.
 > 5. **Build.**
 >
-> **Finish**: cut the whole entry to the top of `done.md`. When nothing is in progress, write the placeholder.
+> **Finish**: cut the whole entry to the top of `done.md` (read only its header and newest entries; don't read the whole history). When nothing is in progress, write the placeholder. Last sub-ticket of a parent done → run the parent's **Integration** check before closing the parent.
 > **Blocked**: keep the ticket here, append `— ⛔ blocked YYYY-MM-DD: waiting on <who/what>` to its title, and say what would unblock it.
 
 ## In progress

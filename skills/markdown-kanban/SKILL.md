@@ -28,13 +28,21 @@ Optional: **Red lines** (what must not happen), **Size** (S/M/L). Reuse the proj
 
 **Each file starts with a `>` rules header. Read it before editing the file, follow it, and never delete it.** The board's own rules (approval policy, common acceptance, phases) override the defaults below.
 
+## Reading the board (save context)
+
+`done.md` only grows. **Never read it whole by default**: read its header and the newest few entries (`Read` with a small limit, ~60 lines), and search it (Grep) for the ticket IDs or terms the current task needs. Read further only when tracing a past decision requires it. `doing.md` is read in full; `backlog.md` only the sections you need.
+
+Don't rewrite, re-summarize or reorder existing entries, and don't copy history into new tickets — cite the ID. Write `done.md` entries as short field bullets, not narrative.
+
 ## Workflows
 
 **Set up** (no `kanban/` yet): copy `templates/backlog.md`, `doing.md`, `done.md` from this skill into `kanban/` with their headers intact, translating all template text if the user writes in another language. Fill in phase names if the user has described the plan; otherwise leave the placeholders (do not block setup on it). Append `templates/claude-md-snippet.md` to the project's `CLAUDE.md` (create it if missing; never overwrite existing content; skip if a Kanban section already exists).
 
 **New request**: add a ticket to `backlog.md` under the phase it belongs to (ask if none fits). Do not start implementing unless asked.
 
-**Big request → split first.** If one ticket could not ship on its own (several features, several layers, or several independently testable pieces), write a parent ticket plus sub-tickets `[APP-7a]`, `[APP-7b]`, … Each sub-ticket is shippable alone and its **Depends on** names the sub-tickets it needs. The parent lists the sub-tickets in order and stays in backlog until all are done.
+**Unclear request → 🌩️ storm ticket, not a split.** If the requirements or the right approach are not settled yet (the user says they don't know, or there are open design questions), write ONE ticket marked 🌩️ with an **Open questions** list, ask the user those questions, and split only after they are answered (see `references/conventions.md`).
+
+**Big request → split first.** If one ticket could not ship on its own (several features, several layers, or several independently testable pieces), write a parent ticket plus sub-tickets `[APP-7a]`, `[APP-7b]`, … Each sub-ticket is shippable alone and its **Depends on** names the sub-tickets it needs. The parent lists the sub-tickets in order, has an **Integration** field (the data/interfaces the sub-tickets must agree on, and one end-to-end check of the combined result), and stays in backlog until all are done.
 
 **Start a ticket** — follow the start ritual in the header of `doing.md`:
 
@@ -46,7 +54,7 @@ Optional: **Red lines** (what must not happen), **Size** (S/M/L). Reuse the proj
 
 Sizing: **small** = one obvious change, a few lines, no design choice, no data/API/schema change. Anything else is **medium** or **large**. A **Size** field on the ticket wins. When unsure, treat it as medium.
 
-🌩️ storm ticket: before planning, read `references/conventions.md` and do the full re-review.
+🌩️ storm ticket (a structural problem built up across tickets, or a request whose right approach was unclear): before planning, read `references/conventions.md` and do the full re-review.
 
 **Finish a ticket**: cut the entry out of `doing.md` (and out of `backlog.md` if a copy is there) and write a `done.md` entry at the **top**, under the header:
 
@@ -56,7 +64,7 @@ Sizing: **small** = one obvious change, a few lines, no design choice, no data/A
 - **Verification**: how it was proven to work.
 ```
 
-Add **Why / Decisions / Log** when there is something to say. If `doing.md` is now empty, write `(no ticket in progress)` (or the board language's equivalent, e.g. `（目前無進行中票）`). When the last sub-ticket of a parent is done, move the parent to `done.md` too.
+Add **Why / Decisions / Log** when there is something to say. If `doing.md` is now empty, write `(no ticket in progress)` (or the board language's equivalent, e.g. `（目前無進行中票）`). When the last sub-ticket of a parent is done, the parent's **Integration** check must still pass: run it (or ask the user to) and move the parent to `done.md` only then, with the result in its **Verification**. Passing sub-tickets alone do not close the parent.
 
 **Blocked, rescoped, or storm ticket; phases**: see `references/conventions.md`.
 
@@ -85,6 +93,9 @@ Add **Why / Decisions / Log** when there is something to say. If `doing.md` is n
 | Executing a 🌩️ ticket as written | Re-review first (`references/conventions.md`) |
 | Coding a medium ticket right after moving it | Verify, plan, then stop for approval |
 | One huge ticket for a multi-part feature | Parent + shippable sub-tickets `[ID]a`, `[ID]b` |
+| Splitting a request whose approach is still unknown | One 🌩️ ticket with open questions; ask first |
+| Closing a parent because every sub-ticket passed | Run the parent's **Integration** check first |
+| Reading all of `done.md` to add one entry | Header + newest entries; Grep for the rest |
 | Deleting or skipping a file's rules header | Keep it; read it first |
 
 See `references/examples.md` for before/after examples.

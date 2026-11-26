@@ -8,4 +8,5 @@
 > - **Log**: notable steps, surprises, dead ends.
 > - **Verification** (always): how it was proven to work.
 >
-> A parent ticket moves here only after all its sub-tickets are done.
+> A parent ticket moves here only after all its sub-tickets are done **and** its Integration check passes.
+> **This file only grows**: write short bullets, not narrative. Never rewrite or re-summarize old entries. To find history, search by ticket ID instead of reading the whole file.

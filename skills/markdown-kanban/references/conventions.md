@@ -22,6 +22,7 @@ When a phase's exit condition is met and its tickets are all in `done.md`, delet
 ### [APP-7] Note sharing (parent — split into 7a–7c)
 - **Goal**: users can share notes with others.
 - **Sub-tickets** (in order): [APP-7a] share link → [APP-7b] permissions → [APP-7c] revoke view.
+- **Integration**: all three use the share record `{noteId, role, revokedAt}` defined in 7a; errors are shown with the app's existing toast. End-to-end check: create a can-edit link → open it as another user and edit → revoke it → the link returns 404.
 
 ### [APP-7a] Read-only share link
 - **Goal**: …
@@ -36,13 +37,34 @@ When a phase's exit condition is met and its tickets are all in `done.md`, delet
 
 Each sub-ticket must be shippable on its own. Split by what can be verified independently (data first, then the layers that use it), not by job title. If a split happens after a ticket was written, annotate the original (see 📌 below).
 
+**Integration** is written when splitting, by looking at the sub-tickets together: which data shapes, interfaces and error states they must agree on; whether two of them would build the same thing; whether the order in **Depends on** works; and one end-to-end check of the combined result. Every sub-ticket can pass on its own while the whole still fails — so the parent closes only after that end-to-end check passes, recorded in its `done.md` **Verification**.
+
 ## 🌩️ Storm tickets
 
-A storm ticket touches a structural problem that built up across many tickets (tangled ownership, two competing implementations, a data model that no longer fits). Its text was written with what was known *then*.
+A storm ticket is work whose right answer is not known when it is written:
+
+- a **structural problem** that built up across many tickets (tangled ownership, two competing implementations, a data model that no longer fits), or
+- a **large request whose requirements or approach are not settled** (the user is unsure how it should behave, or there are several plausible designs).
+
+Its text records what was known *then*. A plain bug with a known fix is not a storm ticket.
 
 **Rule: a normal ticket is executed as written; a storm ticket is *thought through* as written.**
 
-Before starting a 🌩️ ticket, re-review the design and write the answers into the ticket (or a plan the user approves) *before* any implementation:
+Storm flow:
+
+1. **Capture** — one 🌩️ ticket with what is known and an **Open questions** list. Do not split it yet.
+2. **Settle** — research the code and ask the user until the open questions are answered; record each answer as a 📌 annotation.
+3. **Re-review** — when work starts, answer the four questions below.
+4. **Split** — into normal sub-tickets with a parent **Integration** field (see above); they then follow the normal start ritual.
+
+```markdown
+### [APP-12] 🌩️ Offline editing with sync
+- **Goal**: notes can be edited offline and sync when back online.
+- **Open questions**: how are conflicting edits resolved? does the server need a change? which data is cached?
+- **Depends on**: answers to the open questions.
+```
+
+Before splitting or starting a 🌩️ ticket, re-review the design and write the answers into the ticket (or a plan the user approves) *before* any implementation:
 
 1. **Drift** — does the current code/data still match what the ticket assumes?
 2. **Root cause** — is the diagnosis in the ticket still correct?
@@ -92,4 +114,4 @@ Newest entry at the top, directly under the file's header. One entry per finishe
 - **Verification**: how it was proven to work (tests, manual checks, numbers).
 ```
 
-Fields with nothing to say may be omitted, but **Shape** and **Verification** are always present. `done.md` is the project's auditable decision history — write it so someone reading it in a year understands what shipped and why.
+Fields with nothing to say may be omitted, but **Shape** and **Verification** are always present. `done.md` is the project's auditable decision history — write it so someone reading it in a year understands what shipped and why, in short bullets rather than narrative. Because it only grows, agents read its header and newest entries and search the rest by ticket ID; never re-summarize or rewrite old entries.

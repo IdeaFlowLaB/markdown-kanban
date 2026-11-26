@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: finish-last-subticket
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    APP-7c is done, its unit tests pass 8/8.
+context:
+  scaffold_script: setup.sh
