@@ -11,7 +11,7 @@
       "name": "markdown-kanban",
       "source": "./",
       "description": "A three-file Markdown kanban (backlog / doing / done) that lives in your repo and is versioned with your work, with phases, ticket splitting with integration checks, storm tickets for unclear work, a start ritual with an editable approval policy, context-saving reading rules, and hygiene rules that keep the board honest.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "IdeaFlowLaB"
       }

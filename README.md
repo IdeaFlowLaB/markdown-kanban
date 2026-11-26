@@ -118,9 +118,9 @@ Small, obvious tickets (a typo, a one-line fix) go straight to building under th
 
 See [`references/conventions.md`](skills/markdown-kanban/references/conventions.md).
 
-🌩️ **風暴單**：寫票當下還不知道正解的工作，包括跨越多張票累積出來的結構性問題，以及需求或做法還沒定案的大需求。一般票是「照票文做」，風暴單是「照票文想」：列出待決問題 → 跟負責人談定 → 重新審查現況有沒有漂移、根因判斷是否仍成立（新需求則改問背後真正的需求與前提假設）、有沒有更好的解法、有沒有新的地雷 → 拆成一般票。這些都在 `backlog.md` 進行，用**狀態**欄位標示 `discovery`（探索中）→ `ready`（可拆票）。你說「開始做」才算開工，這時才移進 `doing.md`。
+🌩️ **風暴單**：寫票當下還不知道正解的工作，包括跨越多張票累積出來的結構性問題，以及需求或做法還沒定案的大需求。一般票是「照票文做」，風暴單是「照票文想」：列出待決問題 → 跟負責人談定 → 重新審查現況有沒有漂移、根因判斷是否仍成立（新需求則改問背後真正的需求與前提假設）、有沒有更好的解法、有沒有新的地雷 → 拆成一般票。這些都在 `backlog.md` 進行，用**狀態**欄位標示 `discovery`（探索中）→ `ready`（可拆票）。你說「開始做」才算開工，這時才移進 `doing.md`；如果還在 `discovery` 你就說開始，agent 會先問完待決問題，不會自己替你選答案（你要它照預設做，它會把每個預設記成你同意的假設）。拆出來的子票可以同時進行，只有 **Depends on** 寫到的票要等。
 
-🌩️ **Storm tickets** — work whose right answer is not known when it is written: a structural problem that built up across many tickets, or a large request whose requirements or approach are not settled. A normal ticket is executed as written; a storm ticket is *thought through* as written: capture the open questions → settle them with the owner → re-review drift, root cause (or the underlying need and assumptions, for a new request), better fixes and new landmines → split into normal tickets. All of this happens in `backlog.md`, tracked by a **Status** of `discovery` → `ready`. It moves into `doing.md` only when you start it.
+🌩️ **Storm tickets** — work whose right answer is not known when it is written: a structural problem that built up across many tickets, or a large request whose requirements or approach are not settled. A normal ticket is executed as written; a storm ticket is *thought through* as written: capture the open questions → settle them with the owner → re-review drift, root cause (or the underlying need and assumptions, for a new request), better fixes and new landmines → split into normal tickets. All of this happens in `backlog.md`, tracked by a **Status** of `discovery` → `ready`. It moves into `doing.md` only when you start it; if you say start while it is still `discovery`, the agent first asks the open questions instead of answering them itself (if you tell it to use its defaults, each one is recorded as an assumption you accepted). Its sub-tickets can be in progress at the same time; only what is named in **Depends on** makes one wait.
 
 ⛔ **停工**：票留在 `doing.md`，寫明在等誰、等什麼決定。
 
@@ -148,6 +148,8 @@ The skill ships with a [`claude plugin eval`](evals/) suite that runs each scena
 | storm-resume-discovery（新 session 接手：只問還沒答的 · new session asks only what is still open） | 1.00 | 1.00 |
 | storm-ready-to-split（在 backlog 拆票＋整合欄位 · split in backlog, with integration） | 0.40 | 1.00 |
 | start-storm-ticket（開工風暴單 · start a storm ticket） | 0.60–1.00 | 1.00 |
+| start-discovery-storm（還在探索就說開工：先問待決問題 · start while in discovery: ask the open questions first） | 0.33–1.00 | 1.00 |
+| start-concurrent-subticket（子票可同時進行 · sub-tickets can run at the same time） | 1.00 | 1.00 |
 | start-medium-ticket（中型票：查證、計畫、停下等核准 · verify, plan, stop for approval） | 0.40 | 1.00 |
 | start-small-ticket（小票直接修 · just fix it） | 1.00 | 1.00 |
 | approval-all-policy（改過的核准設定有被遵守 · edited policy is obeyed） | 1.00 | 1.00 |

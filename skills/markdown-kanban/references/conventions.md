@@ -55,7 +55,9 @@ Storm flow — everything before the formal start happens in `backlog.md`; discu
 1. **Capture** — one 🌩️ ticket with what is known, an **Open questions** list and **Status**: `discovery`. Do not split it yet.
 2. **Settle** — research the code and ask the user until the open questions are answered; record each answer as a 📌 annotation, so a later session can resume without asking again. When all are answered, set **Status**: `ready`.
 3. **Re-review** — before splitting (or before starting, if it needs no split), answer the four questions below.
-4. **Split** — into normal sub-tickets with a parent **Integration** field (see above). The 🌩️ ticket stays in `backlog.md` as the parent; the sub-tickets move to `doing.md` one at a time through the normal start ritual.
+4. **Split** — into normal sub-tickets with a parent **Integration** field (see above). The 🌩️ ticket stays in `backlog.md` as the parent. Each sub-ticket moves to `doing.md` when the user starts it, through its own start ritual. Several may be in progress at once; a sub-ticket waits only for the tickets named in its **Depends on**.
+
+**Asked to start while Status is still `discovery`?** Don't start it, and don't settle the open questions yourself (not even inside a plan): list the ones still open and ask them. If the user tells you to go ahead on your own defaults, record each default as a 📌 annotation saying the user accepted it as an assumption, set **Status**: `ready`, then start.
 
 ```markdown
 ### [APP-12] 🌩️ Offline editing with sync
