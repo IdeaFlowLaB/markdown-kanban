@@ -61,6 +61,38 @@ npx skills add IdeaFlowLaB/markdown-kanban
 
 > **Manual**: copy `skills/markdown-kanban/` into `~/.claude/skills/` (or your project's `.claude/skills/`).
 
+### 更新 · Update
+
+裝好之後**不會自動更新**。Claude Code 預設只自動更新官方 marketplace，第三方的要自己打開。
+
+> Installed copies **do not update on their own**. Claude Code auto-updates only official marketplaces by default; third-party ones are opt-in.
+
+**Claude Code**：建議在 `/plugin` 的 **Marketplaces** 分頁替 `markdown-kanban` 打開自動更新。要手動更新的話：
+
+> **Claude Code**: turn on auto-update for `markdown-kanban` in the **Marketplaces** tab of `/plugin` (recommended), or update by hand:
+
+```
+/plugin marketplace update markdown-kanban
+/plugin update markdown-kanban@markdown-kanban
+```
+
+更新後重開 Claude Code 才會生效。
+
+> Restart Claude Code to apply the update.
+
+**其他 agent**：
+
+> **Other agents**:
+
+```
+npx skills check     # 查有沒有新版 · check for updates
+npx skills update    # 更新 · update
+```
+
+**手動安裝**：重新複製一次 `skills/markdown-kanban/`。
+
+> **Manual**: copy `skills/markdown-kanban/` again.
+
 ## 使用 · Use
 
 在任何專案裡說「**幫這個專案建一個看板**」。
