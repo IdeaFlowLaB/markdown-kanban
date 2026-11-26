@@ -35,7 +35,7 @@ When a phase's exit condition is met and its tickets are all in `done.md`, delet
 - **Depends on**: [APP-7a].
 ```
 
-Each sub-ticket must be shippable on its own. Split by what can be verified independently (data first, then the layers that use it), not by job title. If a split happens after a ticket was written, annotate the original (see 📌 below).
+Each sub-ticket must be a slice that can be implemented and verified on its own; what it needs from other sub-tickets is stated in **Depends on** (7b needs 7a, and says so). Don't over-split to make every piece independent. Split by what can be verified independently (data first, then the layers that use it), not by job title. If a split happens after a ticket was written, annotate the original (see 📌 below).
 
 **Integration** is written when splitting, by looking at the sub-tickets together: which data shapes, interfaces and error states they must agree on; whether two of them would build the same thing; whether the order in **Depends on** works; and one end-to-end check of the combined result. Every sub-ticket can pass on its own while the whole still fails — so the parent closes only after that end-to-end check passes, recorded in its `done.md` **Verification**.
 
@@ -50,15 +50,16 @@ Its text records what was known *then*. A plain bug with a known fix is not a st
 
 **Rule: a normal ticket is executed as written; a storm ticket is *thought through* as written.**
 
-Storm flow:
+Storm flow — everything before the formal start happens in `backlog.md`; discussing or splitting a storm ticket is not starting it. Starting means the user asks to start it; then the normal start ritual applies (move, re-review, plan, approval):
 
-1. **Capture** — one 🌩️ ticket with what is known and an **Open questions** list. Do not split it yet.
-2. **Settle** — research the code and ask the user until the open questions are answered; record each answer as a 📌 annotation.
-3. **Re-review** — when work starts, answer the four questions below.
-4. **Split** — into normal sub-tickets with a parent **Integration** field (see above); they then follow the normal start ritual.
+1. **Capture** — one 🌩️ ticket with what is known, an **Open questions** list and **Status**: `discovery`. Do not split it yet.
+2. **Settle** — research the code and ask the user until the open questions are answered; record each answer as a 📌 annotation, so a later session can resume without asking again. When all are answered, set **Status**: `ready`.
+3. **Re-review** — before splitting (or before starting, if it needs no split), answer the four questions below.
+4. **Split** — into normal sub-tickets with a parent **Integration** field (see above). The 🌩️ ticket stays in `backlog.md` as the parent; the sub-tickets move to `doing.md` one at a time through the normal start ritual.
 
 ```markdown
 ### [APP-12] 🌩️ Offline editing with sync
+- **Status**: discovery
 - **Goal**: notes can be edited offline and sync when back online.
 - **Open questions**: how are conflicting edits resolved? does the server need a change? which data is cached?
 - **Depends on**: answers to the open questions.
@@ -67,7 +68,7 @@ Storm flow:
 Before splitting or starting a 🌩️ ticket, re-review the design and write the answers into the ticket (or a plan the user approves) *before* any implementation:
 
 1. **Drift** — does the current code/data still match what the ticket assumes?
-2. **Root cause** — is the diagnosis in the ticket still correct?
+2. **Root cause / underlying need** — for a structural problem: is the diagnosis in the ticket still correct? For a new request: what need is behind it, and which recorded assumptions still hold in the code? (Don't invent a root cause for a new feature.)
 3. **Better fix** — is there a simpler or more complete approach now?
 4. **New landmines** — what has changed that the ticket does not mention?
 
@@ -115,3 +116,5 @@ Newest entry at the top, directly under the file's header. One entry per finishe
 ```
 
 Fields with nothing to say may be omitted, but **Shape** and **Verification** are always present. `done.md` is the project's auditable decision history — write it so someone reading it in a year understands what shipped and why, in short bullets rather than narrative. Because it only grows, agents read its header and newest entries and search the rest by ticket ID; never re-summarize or rewrite old entries.
+
+**Token efficiency applies to reading history, not to recording it.** For a significant change, the entry still keeps: the important modules touched, why this design, the options rejected and why, data/API changes, what was tested, and known limitations.

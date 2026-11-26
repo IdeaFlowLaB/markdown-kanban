@@ -29,7 +29,7 @@ In any project, say:
 
 > Set up a kanban board for this project.
 
-This creates `kanban/{backlog,doing,done}.md` and appends a short Kanban section to `CLAUDE.md`, so every future session reads `doing.md` before starting work. From then on, talk normally:
+This creates `kanban/{backlog,doing,done}.md` and appends a short Kanban section to your agent instruction file — `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex, Cursor and other agents that read it (both, if both exist) — so every future session reads `doing.md` before starting work. If your agent reads neither file, paste [the snippet](skills/markdown-kanban/templates/claude-md-snippet.md) into its project rules yourself; otherwise it only uses the board when the skill is triggered. From then on, talk normally:
 
 - "Add a ticket for PDF export." → a ticket in `backlog.md`, under the phase it belongs to
 - "We need note sharing with links, permissions and a revoke screen." → a parent ticket split into shippable sub-tickets `[APP-7a]`, `[APP-7b]`, …, plus an **Integration** check that proves the pieces work together
@@ -61,12 +61,12 @@ Every board file starts with its own rules, so anyone who opens it — a person,
 - `backlog.md` holds only unstarted tickets.
 - `done.md` is the decision history: **Shape / Why / Decisions / Log / Verification**, newest on top.
 - A parent ticket closes only when its **Integration** check passes, not just because every sub-ticket did.
-- `done.md` is never read whole by default, and old entries are never rewritten or re-summarized.
+- `done.md` is never read whole by default, and old entries are never rewritten or re-summarized. Saving context applies to reading, never to what gets recorded.
 - Leftovers already on the board are violations to clean up, not a convention to copy.
 
 Advanced conventions (see [`references/conventions.md`](skills/markdown-kanban/references/conventions.md)):
 
-- 🌩️ **Storm tickets** — work whose right answer is not known when it is written: a structural problem that built up across many tickets, or a large request whose requirements or approach are not settled. A normal ticket is executed as written; a storm ticket is *thought through* as written: capture the open questions → settle them with the owner → re-review drift, root cause, better fixes and new landmines → split into normal tickets.
+- 🌩️ **Storm tickets** — work whose right answer is not known when it is written: a structural problem that built up across many tickets, or a large request whose requirements or approach are not settled. A normal ticket is executed as written; a storm ticket is *thought through* as written: capture the open questions → settle them with the owner → re-review drift, root cause (or the underlying need and assumptions, for a new request), better fixes and new landmines → split into normal tickets. All of this happens in `backlog.md`, tracked by a **Status** of `discovery` → `ready`; it moves into `doing.md` only when it is formally started.
 - ⛔ **Blocked** — stays in `doing.md`, says who or what it waits on.
 - 📌 **Annotations** — splits and rescopes are added as dated notes instead of rewriting the original ticket.
 
@@ -83,6 +83,10 @@ The skill ships with a [`claude plugin eval`](evals/) suite that runs each scena
 | finish-last-subticket (parent waits for its integration check) | 0.00 | 1.00 |
 | storm-uncertain-request (unclear request → storm ticket + questions) | 0.33–0.67 | 1.00 |
 | finish-long-history (2,800-line `done.md`: read only the top) | 0.67 | 1.00 |
+| finish-rich-record (decision context kept in `done.md`) | 0.00 | 1.00 |
+| storm-resume-discovery (new session: ask only what is still open) | 1.00 | 1.00 |
+| storm-ready-to-split (split in backlog, with integration) | 0.40 | 1.00 |
+| init-board-agents-md (hook also lands in `AGENTS.md`) | 0.33 | 1.00 |
 | start-medium-ticket (verify, plan, stop for approval) | 0.40 | 1.00 |
 | start-small-ticket (just fix it) | 1.00 | 1.00 |
 | approval-all-policy (edited policy is obeyed) | 1.00 | 1.00 |

@@ -29,7 +29,7 @@ npx skills add IdeaFlowLaB/markdown-kanban
 
 > 幫這個專案建一個看板。
 
-會建好 `kanban/{backlog,doing,done}.md`，並在 `CLAUDE.md` 加一小段看板掛鉤，讓之後每個 session 開工前先讀 `doing.md`。之後照平常講話就好：
+會建好 `kanban/{backlog,doing,done}.md`，並在 agent 的指令檔加一小段看板掛鉤：Claude Code 是 `CLAUDE.md`，Codex、Cursor 等會讀 `AGENTS.md` 的 agent 是 `AGENTS.md`，兩個都有就兩個都加。這樣之後每個 session 開工前都會先讀 `doing.md`。如果你的 agent 兩個檔都不讀，請自己把[這段掛鉤](skills/markdown-kanban/templates/claude-md-snippet.md)貼進它的專案規則，不然只有在觸發 skill 時才會用到看板。之後照平常講話就好：
 
 - 「開一張票：PDF 匯出。」→ 在 `backlog.md` 對應的階段底下開票
 - 「我們要做筆記分享：分享連結、權限、撤銷畫面。」→ 一張母票，拆成可以各自出貨的子票 `[APP-7a]`、`[APP-7b]`……，母票另外寫一條**整合**檢查，確認各子票合起來能用
@@ -61,12 +61,12 @@ npx skills add IdeaFlowLaB/markdown-kanban
 - `backlog.md` 只放還沒開工的票。
 - `done.md` 是決策史：**形狀／為何／裁決／執行紀錄／驗證**，新的放最上面。
 - 母票要等**整合**檢查通過才結案，不是子票全過就算完成。
-- `done.md` 預設不整份讀，舊紀錄不改寫、不重新摘要。
+- `done.md` 預設不整份讀，舊紀錄不改寫、不重新摘要。省 context 只省在讀取，記錄時不省。
 - 看板上已經存在的殘留是要清掉的違規，不是可以照抄的慣例。
 
 進階慣例（見 [`references/conventions.md`](skills/markdown-kanban/references/conventions.md)）：
 
-- 🌩️ **風暴單**：寫票當下還不知道正解的工作，包括跨越多張票累積出來的結構性問題，以及需求或做法還沒定案的大需求。一般票是「照票文做」，風暴單是「照票文想」：列出待決問題 → 跟負責人談定 → 重新審查現況有沒有漂移、根因判斷是否仍成立、有沒有更好的解法、有沒有新的地雷 → 拆成一般票。
+- 🌩️ **風暴單**：寫票當下還不知道正解的工作，包括跨越多張票累積出來的結構性問題，以及需求或做法還沒定案的大需求。一般票是「照票文做」，風暴單是「照票文想」：列出待決問題 → 跟負責人談定 → 重新審查現況有沒有漂移、根因判斷是否仍成立（新需求則改問背後真正的需求與前提假設）、有沒有更好的解法、有沒有新的地雷 → 拆成一般票。這些都在 `backlog.md` 進行，用**狀態**欄位標示 `discovery`（探索中）→ `ready`（可拆票），正式開工才移進 `doing.md`。
 - ⛔ **停工**：票留在 `doing.md`，寫明在等誰、等什麼決定。
 - 📌 **加註**：拆票、升格、改範圍時加上日期註記，不改寫原文。
 
@@ -83,6 +83,10 @@ skill 附一套 [`claude plugin eval`](evals/) 測試，每個情境都分「有
 | finish-last-subticket（母票等整合檢查才結案） | 0.00 | 1.00 |
 | storm-uncertain-request（需求不明 → 風暴單＋提問） | 0.33–0.67 | 1.00 |
 | finish-long-history（2,800 行的 done.md：只讀開頭） | 0.67 | 1.00 |
+| finish-rich-record（done 保留決策脈絡） | 0.00 | 1.00 |
+| storm-resume-discovery（新 session 接手：只問還沒答的） | 1.00 | 1.00 |
+| storm-ready-to-split（在 backlog 拆票＋整合欄位） | 0.40 | 1.00 |
+| init-board-agents-md（掛鉤也寫進 AGENTS.md） | 0.33 | 1.00 |
 | start-medium-ticket（中型票：查證、計畫、停下等核准） | 0.40 | 1.00 |
 | start-small-ticket（小票直接修） | 1.00 | 1.00 |
 | approval-all-policy（改過的核准設定有被遵守） | 1.00 | 1.00 |

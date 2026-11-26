@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: finish-rich-record
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Edit, Write, Glob, Grep, Skill]
+  prompt: |
+    APP-20 is done. We moved note storage from localStorage to IndexedDB because users with many notes hit the 5 MB quota. We considered keeping localStorage and compressing the notes, but rejected it since the cap is still there. The stored note now has an `updatedAt` field, and old data is migrated on first launch. Tests pass 40/40, plus a manual check with 20k notes. Known limitation: Safari private mode has no IndexedDB, so the app falls back to read-only there.
+context:
+  scaffold_script: setup.sh

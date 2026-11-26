@@ -10,3 +10,4 @@
 >
 > A parent ticket moves here only after all its sub-tickets are done **and** its Integration check passes.
 > **This file only grows**: write short bullets, not narrative. Never rewrite or re-summarize old entries. To find history, search by ticket ID instead of reading the whole file.
+> **Save context when reading, not when recording**: a significant change still records the modules touched, why this design, rejected options, data/API changes, what was tested and known limitations.

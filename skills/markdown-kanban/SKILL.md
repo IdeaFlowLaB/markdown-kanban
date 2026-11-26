@@ -32,17 +32,17 @@ Optional: **Red lines** (what must not happen), **Size** (S/M/L). Reuse the proj
 
 `done.md` only grows. **Never read it whole by default**: read its header and the newest few entries (`Read` with a small limit, ~60 lines), and search it (Grep) for the ticket IDs or terms the current task needs. Read further only when tracing a past decision requires it. `doing.md` is read in full; `backlog.md` only the sections you need.
 
-Don't rewrite, re-summarize or reorder existing entries, and don't copy history into new tickets — cite the ID. Write `done.md` entries as short field bullets, not narrative.
+Don't rewrite, re-summarize or reorder existing entries, and don't copy history into new tickets — cite the ID. Write `done.md` entries as short field bullets, not narrative. **This saves context when reading, never by recording less**: keep the decisions, rejected options, data/API changes, tests and known limitations.
 
 ## Workflows
 
-**Set up** (no `kanban/` yet): copy `templates/backlog.md`, `doing.md`, `done.md` from this skill into `kanban/` with their headers intact, translating all template text if the user writes in another language. Fill in phase names if the user has described the plan; otherwise leave the placeholders (do not block setup on it). Append `templates/claude-md-snippet.md` to the project's `CLAUDE.md` (create it if missing; never overwrite existing content; skip if a Kanban section already exists).
+**Set up** (no `kanban/` yet): copy `templates/backlog.md`, `doing.md`, `done.md` from this skill into `kanban/` with their headers intact, translating all template text if the user writes in another language. Fill in phase names if the user has described the plan; otherwise leave the placeholders (do not block setup on it). Append `templates/claude-md-snippet.md` to the project's agent instruction files so every future session reads the board: `CLAUDE.md` (Claude Code) and `AGENTS.md` (Codex, Cursor and most other agents). Add it to each of these that exists, and create the one for the agent you are running in if it is missing. Never overwrite existing content; skip a file that already has a Kanban section.
 
 **New request**: add a ticket to `backlog.md` under the phase it belongs to (ask if none fits). Do not start implementing unless asked.
 
-**Unclear request → 🌩️ storm ticket, not a split.** If the requirements or the right approach are not settled yet (the user says they don't know, or there are open design questions), write ONE ticket marked 🌩️ with an **Open questions** list, ask the user those questions, and split only after they are answered (see `references/conventions.md`).
+**Unclear request → 🌩️ storm ticket, not a split.** If the requirements or the right approach are not settled yet (the user says they don't know, or there are open design questions), write ONE ticket marked 🌩️ with an **Open questions** list, ask the user those questions, and split only after they are answered (see `references/conventions.md`). A storm ticket stays in `backlog.md` through discovery and splitting, with **Status** `discovery` (questions open) → `ready` (all answered); it, or a sub-ticket, moves to `doing.md` only when the user starts it, through the normal start ritual. When resuming one, read its annotations and ask only what is still open.
 
-**Big request → split first.** If one ticket could not ship on its own (several features, several layers, or several independently testable pieces), write a parent ticket plus sub-tickets `[APP-7a]`, `[APP-7b]`, … Each sub-ticket is shippable alone and its **Depends on** names the sub-tickets it needs. The parent lists the sub-tickets in order, has an **Integration** field (the data/interfaces the sub-tickets must agree on, and one end-to-end check of the combined result), and stays in backlog until all are done.
+**Big request → split first.** If one ticket could not ship on its own (several features, several layers, or several independently testable pieces), write a parent ticket plus sub-tickets `[APP-7a]`, `[APP-7b]`, … Each sub-ticket is a slice that can be implemented and verified on its own, and its **Depends on** names the sub-tickets it needs. The parent lists the sub-tickets in order, has an **Integration** field (the data/interfaces the sub-tickets must agree on, and one end-to-end check of the combined result), and stays in backlog until all are done.
 
 **Start a ticket** — follow the start ritual in the header of `doing.md`:
 
@@ -90,6 +90,8 @@ Add **Why / Decisions / Log** when there is something to say. If `doing.md` is n
 | Appending to the bottom of `done.md` | Newest entry goes at the top |
 | Starting a ticket but leaving it in `backlog.md` | Cut, don't copy |
 | One `KANBAN.md` or `TODO.md` file | Three files under `kanban/` |
+| Kanban section only in `CLAUDE.md` when the project uses `AGENTS.md` | Add it to every agent instruction file that exists |
+| Moving a 🌩️ ticket to `doing.md` to discuss or split it | It stays in `backlog.md` until the user starts it |
 | Executing a 🌩️ ticket as written | Re-review first (`references/conventions.md`) |
 | Coding a medium ticket right after moving it | Verify, plan, then stop for approval |
 | One huge ticket for a multi-part feature | Parent + shippable sub-tickets `[ID]a`, `[ID]b` |
